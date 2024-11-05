@@ -15,7 +15,7 @@ import { auth } from "@/firebase.config";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { toast } from 'react-hot-toast'; // Ensure you import your toast notification system
 
-const Signinbutton=()=>{
+const Signinbutton=({className,text})=>{
   const [user, setUser] = useState(null);
   const [open, setOpen] = useState(false);
   const [magicsent,setmagicsent]=useState(localStorage.getItem('emailForSignIn'));
@@ -46,9 +46,9 @@ const Signinbutton=()=>{
   return (
     <div>
       {user? (
-        <Button onClick={handleSignOut}>Log Out</Button>
+        <Button  className={className} onClick={handleSignOut}>{text}</Button>
       ) : (
-        (magicsent==null)?( <Button onClick={handleOpen}>Log In</Button>):(<Button onClick={handleOpen}>Email Sent</Button>)
+        (magicsent==null)?( <Button className={className} onClick={handleOpen}>{text}</Button>):(<Button onClick={handleOpen}>Email Sent</Button>)
        
       )}
 
