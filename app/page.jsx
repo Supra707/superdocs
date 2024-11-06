@@ -230,13 +230,7 @@ const Home = () => {
 
 
 
-      <div className="bg-red-700 relative bottom-[-2] ">
-        <div className="bubble"></div>
-        <div className="bubble"></div>
-        <div className="bubble"></div>
-        <div className="bubble"></div>
-        <div className="bubble"></div>
-      </div>
+    
     </div>
 
   );
