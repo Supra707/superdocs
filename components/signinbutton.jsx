@@ -19,8 +19,12 @@ import { toast } from 'react-hot-toast'; // Ensure you import your toast notific
 const Signinbutton=({className,text})=>{
   const [user, setUser] = useState(null);
   const [open, setOpen] = useState(false);
-  const [magicsent,setmagicsent]=useState(localStorage.getItem('emailForSignIn'));
-
+  const [magicsent,setmagicsent]=useState(null);
+  useEffect(() => {
+    // Access localStorage on the client side after the component mounts
+    const emailForSignIn = localStorage.getItem('emailForSignIn');
+    setmagicsent(emailForSignIn);
+  }, []);
   useEffect(() => {
     // Set up an authentication state observer
     const unsubscribe = onAuthStateChanged(auth, (user) => {
