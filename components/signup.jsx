@@ -59,9 +59,13 @@ const SignUp = ({setOpen,setmagicsent}) => {
     try {
       await sendSignInLinkToEmail(auth, email, actionCodeSettings);
       toast.success("Check your email for the sign-in link!");
+       
+
       localStorage.setItem('emailForSignIn', email); // Save the email to local storage
       setEmail(""); // Clear the email input
       setChecked(false); // Uncheck the checkbox
+      // Force page reload here
+    window.location.reload();
     } catch (error) {
       toast.error(error.message);
     }

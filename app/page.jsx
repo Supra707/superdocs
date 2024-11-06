@@ -5,7 +5,10 @@ import { useState, useEffect } from 'react';
 import { auth } from '@/firebase.config';
 import { onAuthStateChanged } from 'firebase/auth';
 import Link from 'next/link';
+import docs from "@/public/assets/docs.json";
+import Lottie from "lottie-react";
 import Typewriter from 'typewriter-effect';
+import { AnimatedTooltip } from '@/components/ui/animated-tooltip';
 const colors = [
   '#2196f3',
   '#f43f5e',
@@ -26,7 +29,50 @@ const colors = [
   '#f97316',
   '#ef4444',
 ];
-
+const people = [
+  {
+    id: 1,
+    name: "John Doe",
+    designation: "Software Engineer",
+    image:
+      "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3387&q=80",
+  },
+  {
+    id: 2,
+    name: "Robert Johnson",
+    designation: "Product Manager",
+    image:
+      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+  },
+  {
+    id: 3,
+    name: "Jane Smith",
+    designation: "Data Scientist",
+    image:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+  },
+  {
+    id: 4,
+    name: "Emily Davis",
+    designation: "UX Designer",
+    image:
+      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGF2YXRhcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
+  },
+  {
+    id: 5,
+    name: "Tyler Durden",
+    designation: "Soap Developer",
+    image:
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3540&q=80",
+  },
+  {
+    id: 6,
+    name: "Dora",
+    designation: "The Explorer",
+    image:
+      "https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3534&q=80",
+  },
+];
 const Home = () => {
   const [user, setUser] = useState(null);
   const [currentColorIndex, setCurrentColorIndex] = useState(0);
@@ -51,10 +97,10 @@ const Home = () => {
 
   return (
     <div>
-      <div className="bg-slate-900 min-h-screen">
 
+      <div class="relative  h-full w-full  bg-slate-950"><div class="absolute bottom-0 left-0 right-0 top-[70px] bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"></div>
         {/* Navbar */}
-        <div style={{ backgroundColor: colors[currentColorIndex] }} className="flex  justify-center md:justify-between p-8 gap-x-10 items-center w-full h-[6vh] transition-colors duration-1000">
+        <div style={{ backgroundColor: colors[currentColorIndex] }} className="z-[999]  flex  justify-center md:justify-between p-8 gap-x-10 items-center w-full h-[6vh] transition-colors duration-1000">
           <div className=" z-[999] flex justify-around gap-x-3 items-center">
             <Link href="/">
               <div className=" flex items-center gap-x-1 text-4xl text-black-700 font-extrabold  text-3d-sharp transition-transform duration-300 ease-in-out hover:scale-105">
@@ -74,13 +120,13 @@ const Home = () => {
 
           </div>
           <div className="z-[999] hidden md:block">
-            <Signinbutton className="bg-black text-[20px] p-6 " text="Log In" />
+            <Signinbutton className=" bg-black text-[20px] p-6 " text="Log In" />
           </div>
 
         </div>
         {/* Hero Section */}
-        <div className="md:text-center p-4">
-          <div className="m-4 font-extrabold text-5xl md:text-9xl [text-wrap:balance] bg-clip-text text-transparent bg-gradient-to-r from-slate-200/60 to-50% to-slate-200">Trusted by the most innovative minds in
+        <div className=" md:text-center p-4">
+          <div className=" z-20 m-4 font-extrabold text-5xl md:text-9xl [text-wrap:balance] bg-clip-text text-transparent bg-gradient-to-r from-slate-200/60 to-50% to-slate-200">Trusted by the most innovative minds in
             <span className="text-indigo-500 font-extrabold inline-flex flex-col h-[calc(theme(fontSize.6xl)*theme(lineHeight.tight))] md:h-[calc(theme(fontSize.9xl)*theme(lineHeight.tight))] overflow-hidden text-3d-sharp transition-transform duration-300 ease-in-out hover:scale-105">
 
               <ul className="block animate-text-slide-5 text-left leading-tight [&_li]:block">
@@ -96,30 +142,47 @@ const Home = () => {
 
           </div>
           <div className="w-full mt-5 text-white font-bold grid grid-cols-1 md:grid-cols-2">
+            <div className="z-20 mx-auto max-w-7xl pt-16 sm:pt-24">
+              <div className="space-y-8 ">
+                <div className="px-6 sm:text-center md:mx-auto md:max-w-2xl lg:col-span-6 lg:flex lg:items-center lg:text-left">
+                  <div className="space-y-8">
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <span className="rounded-full bg-pink-500 px-3 py-0.5 text-sm font-semibold uppercase leading-5 text-white">Rated Best</span>
+                        <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
+                          <span className="sm:text-6xl"></span>Experience seamless collaboration with
+                          <span className="bg-gradient-to-r from-yellow-400 to-pink-600 bg-clip-text font-extrabold text-transparent">&nbsp;SuperDocs</span>
+                          <br />
+                          go beyond editing.
+                        </h1>
+                      </div>
 
-            <div className="p-6"> {/* Adjust button alignment */}
-              <div className="space-y-4 flex-1 sm:text-center lg:text-left">
-                <h1 className="text-white font-bold text-4xl md:text-8xl xl:text-5xl">
-                  One page Template for
-                  <span className="text-indigo-400"> Digital agency</span>
-                </h1>
-                <p className="text-gray-300 text-xl md:text-2xl max-w-xl leading-relaxed sm:mx-auto lg:ml-0">
-                  It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum
-                </p>
-                <div className="pt-10 items-center justify-center space-y-3 sm:space-x-6 sm:space-y-0 sm:flex lg:justify-start">
-                  <Signinbutton className="bg-green-700 hover:bg-emerald-500 transition-all duartion-2000 text-2xl p-6 w-full" text="Get Started" />
-                  <a href="" className="px-7 py-3 w-full bg-gray-700 text-gray-200 text-center rounded-md block sm:w-auto">
-                    Try it out
-                  </a>
+                      <p className="text-base text-gray-200 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+                        This powerful, user-friendly document editor enables real-time editing, sharing, and teamwork from anywhere in the world. Whether you’re working on a team project or creating a document with multiple contributors, DocFlow ensures that everyone stays in sync effortlessly.
+                      </p>
+                    </div>
+                    <Signinbutton className=" bg-green-700 p-4 w-full h-full hover:bg-green-500 text-white font-bold text-xl transition-all duration-3000" text="Get Started"></Signinbutton>
+                    <div className="border-t border-gray-700"></div>
+
+                    <div className="flex items-center space-x-4 text-white">
+                      <div className="flex gap-x-2">
+                        <AnimatedTooltip items={people} />
+                      </div>
+                      <div className="h-4 border-l border-gray-700"></div>
+
+
+                      <div className="h-4 border-l border-gray-700"></div>
+                      <a href="" target="_blank">
+                        <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1&theme=light" className="h-8 w-32 md:h-12 md:w-48 lg:h-16 lg:w-64" alt="Product Hunt badge" />
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
-
             </div>
-            <div className="p-6"> {/* Center the 3D model in the first column */}
-              <button className="  w-full md:w-auto md:self-start md:relative md:bottom-auto hover:bg-indigo-500 hover:text-white transition duration-300">
-                3D model
 
-              </button>
+            <div className=""> {/* Center the 3D model in the first column */}
+              <Lottie animationData={docs} />
             </div>
 
           </div>
@@ -159,21 +222,24 @@ const Home = () => {
               </svg>
             </a>
           </div>
-        </div>
+        </div></div>
 
-      </div>
-      <div class="bg-red-700 relative bottom-[-2] ">
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
+
+
+      <div className="bg-red-700 relative bottom-[-2] ">
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
+        <div className="bubble"></div>
       </div>
     </div>
 
   );
+
 };
 
 export default Home;
+
 
 

@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+
 import {
   Credenza,
   CredenzaBody,
@@ -46,9 +47,9 @@ const Signinbutton=({className,text})=>{
   return (
     <div>
       {user? (
-        <Button  className={className} onClick={handleSignOut}>{text}</Button>
+        <Button  className={className} onClick={handleSignOut}>Log Out</Button>
       ) : (
-        (magicsent==null)?( <Button className={className} onClick={handleOpen}>{text}</Button>):(<Button onClick={handleOpen}>Email Sent</Button>)
+        (magicsent==null)?( <Button className={className} onClick={handleOpen}>{text}</Button>):(<Button className={className}onClick={handleOpen}>Email Sent</Button>)
        
       )}
 
@@ -65,7 +66,7 @@ const Signinbutton=({className,text})=>{
             </p>
           </CredenzaHeader>
           <CredenzaBody>
-            {(magicsent==null)?(<SignUp setOpen={setOpen} setmagicsent={setmagicsent} />):(<div>Email is sent you mororn i am not going to let you misuse the modal anymore go look in your email</div>) } {/* Render SignUp if user is not authenticated */}
+            {(magicsent==null)?(<SignUp setOpen={setOpen} setmagicsent={setmagicsent} />):(<div>Email is sent you mororn i am not going to let you misuse the modal anymore go look in your email</div>) } {/*email not sent then normal signup else info modal */}
           </CredenzaBody>
           <CredenzaFooter>
             {/* Optional footer content can go here */}
