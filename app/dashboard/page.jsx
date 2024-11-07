@@ -16,6 +16,7 @@ const SignInCallback = () => {
 
   // Function to handle adding a new document
   const handleAddDocument = () => {
+    //open a modal and take info about the document//
     setDocuments((prevDocs) => [
       { id: prevDocs.length, isButton: false },
       ...prevDocs, // Insert new card at the left
@@ -64,42 +65,44 @@ const SignInCallback = () => {
   // If the user is signed in, show the dashboard
   if (user) {
     return (
-      <div className="bg-slate-900 w-full min-h-screen p-4">
-        <div className="text-white font-extrabold text-3xl mb-6 pl-4">
-          Welcome Back, {auth.currentUser?.displayName || "User "}
-        </div>
+      <div className="bg-slate-900 w-full min-h-screen ">
+        <div className="p-8 ">
+          <div className="text-white font-extrabold text-3xl mb-6">
+            Welcome Back, {auth.currentUser?.displayName || "User "}
+          </div>
 
-        <div className="flex gap-4 flex-wrap items-center flex-col md:flex-row justify-center md:justify-start relative ">
-          {/* Display Document Cards */}
-          {documents
-            .slice()
-            .reverse()
-            .map((doc) => (
-              <div
-                key={doc.id}
-                className={`flex flex-col items-center justify-center text-white w-44 h-44 bg-blue-600 bg-opacity-20 border border-gray-200 rounded-lg transition-all duration-500 ease-out animate-slide-in-left`}
-              >
-                <img
-                  src="https://img.icons8.com/?size=100&id=7QBENrGpaLMB&format=png&color=000000"
-                  className="w-20 h-20 object-cover mb-2"
-                  alt="Document Icon"
-                />
-                <p className="text-[15px]">Document {doc.id}</p>
-              </div>
-            ))}
+          <div className="flex gap-4 flex-wrap items-center flex-col md:flex-row justify-center md:justify-start relative ">
+            {/* Display Document Cards */}
+            {documents
+              .slice()
+              .reverse()
+              .map((doc) => (
+                <div
+                  key={doc.id}
+                  className={`flex flex-col items-center justify-center text-white w-44 h-44 bg-blue-600 bg-opacity-20 border border-gray-200 rounded-lg transition-all duration-500 ease-out animate-slide-in-left`}
+                >
+                  <img
+                    src="https://img.icons8.com/?size=100&id=7QBENrGpaLMB&format=png&color=000000"
+                    className="w-20 h-20 object-cover mb-2"
+                    alt="Document Icon"
+                  />
+                  <p className="text-[15px]">Document {doc.id}</p>
+                </div>
+              ))}
 
-          {/* Create New Document Button */}
-          <button
-            onClick={handleAddDocument}
-            className="flex flex-col justify-center items-center text-white w-44 h-44 bg-blue-600 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-lg border border-gray-200 hover:border-yellow-500 transition duration-300 ease-in-out"
-          >
-            <img
-              src="https://img.icons8.com/?size=100&id=7QBENrGpaLMB&format=png&color=000000"
-              className="w-20 h-20 object-cover transition-transform duration-300 ease-in-out hover:scale-105"
-              alt="New Document Icon"
-            />
-            <p className="text-[15px] mt-2">Create New Document</p>
-          </button>
+            {/* Create New Document Button */}
+            <button
+              onClick={handleAddDocument}
+              className="flex flex-col justify-center items-center text-white w-44 h-44 bg-blue-600 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-lg border border-gray-200 hover:border-yellow-500 transition duration-300 ease-in-out"
+            >
+              <img
+                src="https://img.icons8.com/?size=100&id=7QBENrGpaLMB&format=png&color=000000"
+                className="w-20 h-20 object-cover transition-transform duration-300 ease-in-out hover:scale-105"
+                alt="New Document Icon"
+              />
+              <p className="text-[15px] mt-2">Create New Document</p>
+            </button>
+          </div>
         </div>
       </div>
     );
