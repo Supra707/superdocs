@@ -10,6 +10,29 @@ html{
 	scroll-behavior: smooth;
 }
 
+@keyframes moveToRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(10px); /* Adjusted for a small shift */
+  }
+}
+
+@keyframes animate-slide-in-left {
+  0% {
+    transform: translateX(-50px);
+    opacity:  0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-left {
+  animation: animate-slide-in-left 0.5s ease-out forwards;
+}
 
 .text-3d-sharp {
   text-shadow:
