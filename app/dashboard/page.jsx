@@ -1,14 +1,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { auth } from "@/firebase.config";
-
+import Modal from "@/components/modal";
 import {
   isSignInWithEmailLink,
   signInWithEmailLink,
   onAuthStateChanged,
 } from "firebase/auth";
 import Image from "next/image";
-const SignInCallback = () => {
+const page= () => {
+  let index=1;
+  const[doc,setdoc]=useState("");
+  const[ok,setok]=useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   // Initialize an empty array for documents
@@ -16,12 +19,20 @@ const SignInCallback = () => {
 
   // Function to handle adding a new document
   const handleAddDocument = () => {
-    //open a modal and take info about the document//
     setDocuments((prevDocs) => [
-      { id: prevDocs.length, isButton: false },
+      { id:index, title:doc, isButton: false },
       ...prevDocs, // Insert new card at the left
     ]);
   };
+  useEffect(()=>{
+    if(ok){
+      handleAddDocument();
+      index++;
+      console.log(doc);
+      setdoc("");
+      setok(false);
+    }
+  },[ok]);
   useEffect(() => {
     // Listener to track authentication state changes
     const unsubscribe = onAuthStateChanged(auth, (authUser) => {
@@ -76,32 +87,23 @@ const SignInCallback = () => {
             {documents
               .slice()
               .reverse()
-              .map((doc) => (
+              .map((document) => (
                 <div
-                  key={doc.id}
+                  key={document.id}
                   className={`flex flex-col items-center justify-center text-white w-44 h-44 bg-blue-600 bg-opacity-20 border border-gray-200 rounded-lg transition-all duration-500 ease-out animate-slide-in-left`}
                 >
                   <img
-                    src="https://img.icons8.com/?size=100&id=7QBENrGpaLMB&format=png&color=000000"
+                    src="https://img.icons8.com/?size=100&id=30464&format=png&color=000000"
                     className="w-20 h-20 object-cover mb-2"
                     alt="Document Icon"
                   />
-                  <p className="text-[15px]">Document {doc.id}</p>
+                  <p className="text-[15px]">{document.title}</p>
                 </div>
               ))}
 
             {/* Create New Document Button */}
-            <button
-              onClick={handleAddDocument}
-              className="flex flex-col justify-center items-center text-white w-44 h-44 bg-blue-600 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-lg border border-gray-200 hover:border-yellow-500 transition duration-300 ease-in-out"
-            >
-              <img
-                src="https://img.icons8.com/?size=100&id=7QBENrGpaLMB&format=png&color=000000"
-                className="w-20 h-20 object-cover transition-transform duration-300 ease-in-out hover:scale-105"
-                alt="New Document Icon"
-              />
-              <p className="text-[15px] mt-2">Create New Document</p>
-            </button>
+            <Modal doc={doc} setdoc={setdoc} setok={setok}/>
+            
           </div>
         </div>
       </div>
@@ -112,4 +114,4 @@ const SignInCallback = () => {
   return <div>Sign-in failed or invalid link. Please try again.</div>;
 };
 
-export default SignInCallback;
+export default page;
