@@ -52,7 +52,7 @@ const SignUp = ({setOpen,setmagicsent}) => {
  
     const actionCodeSettings = {
       // URL you want to redirect back to after email verification
-      url: 'https://superdocs-mu.vercel.app/dashboard', // Change to your production URL
+      url: 'https://supradocs.vercel.app/dashboard', // Change to your production URL
       handleCodeInApp: true,
     };
     setloading(true);
