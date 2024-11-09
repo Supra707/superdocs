@@ -124,7 +124,7 @@ const Home = () => {
 
           </div>
           <div className="z-[999] hidden md:block">
-            <Signinbutton className=" bg-black text-[20px] p-6 " text="Log In" />
+            <Signinbutton className=" bg-black text-[20px] font-bold p-6 text-white" text="Log In" />
           </div>
 
         </div>
@@ -165,7 +165,7 @@ const Home = () => {
                         This powerful, user-friendly document editor enables real-time editing, sharing, and teamwork from anywhere in the world. Whether you’re working on a team project or creating a document with multiple contributors, DocFlow ensures that everyone stays in sync effortlessly.
                       </p>
                     </div>
-                    <Signinbutton className=" bg-green-700 p-4 w-full h-full hover:bg-green-500 text-white font-bold text-xl transition-all duration-3000" text="Get Started"></Signinbutton>
+                    <Signinbutton className=" bg-green-700 p-4 w-full h-full  text-white font-bold text-xl transition-all duration-3000" text="Get Started"></Signinbutton>
                     <div className="border-t border-gray-700"></div>
 
                     <div className="flex flex-col md:flex-row items-center space-x-4 text-white">
