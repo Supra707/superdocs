@@ -61,7 +61,6 @@ const Page = () => {
       ]);
     }
   };
-
   useEffect(() => {
     if (ok) {
       fetchLatestDocument();
@@ -74,9 +73,9 @@ const Page = () => {
     const unsubscribe = onAuthStateChanged(auth, (authUser) => {
       setUser(authUser);
       setLoading(false);
-
       if (authUser) {
         fetchDocuments();
+        
       }
     });
 
@@ -116,7 +115,9 @@ const Page = () => {
           <div className="text-white font-extrabold text-3xl mb-6">
             Welcome Back, {auth.currentUser?.displayName}
           </div>
-
+          <div className="text-white font-extrabold text-2xl mb-6">
+            You have a total of {documents.length} documents
+          </div>
           <div className="flex gap-4 flex-wrap items-center flex-col md:flex-row justify-center md:justify-start relative">
             {documents.slice().reverse().map((document) => (
               <button key={document.id}>
