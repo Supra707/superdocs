@@ -18,6 +18,7 @@ const Page = () => {
     const params = useParams();
     const [documentId, setDocumentId] = useState('');
     const [title, setTitle] = useState("");
+    const[editorcontent,seteditorcontent]=useState("<h1><b>Write Something Amazing</b></h1>");
 
     // Function to add a new comment to the array
     const addComment = (newComment) => {
@@ -82,7 +83,7 @@ const Page = () => {
                         timestamp: new Date(), // Add a timestamp if needed
                     }),
                 });
-
+                console.log(editorcontent);
                 // Update the UI with the new comment
                 addComment({
                     text: comment,
@@ -123,7 +124,7 @@ const Page = () => {
                 </div>
                 {/* Left side: Editor and Editor Header */}
                 <div className="">
-                    <Editor_Implement />
+                    <Editor_Implement editorcontent={editorcontent} seteditorcontent={seteditorcontent} />
                 </div>
             </div>
 

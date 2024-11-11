@@ -2,7 +2,7 @@
 import { useRef, useEffect, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 
-export default function Editor_Implement() {
+export default function Editor_Implement({editorcontent,seteditorcontent}) {
   const editorRef = useRef(null);
   const [editorHeight, setEditorHeight] = useState(5000); // Default to desktop height
   const [editorKey, setEditorKey] = useState(0); // Forcing re-render on height change
@@ -22,7 +22,7 @@ export default function Editor_Implement() {
 
   const log = () => {
     if (editorRef.current) {
-      console.log(editorRef.current.getContent());
+      seteditorcontent(editorRef.current.getContent());
     }
   };
 
@@ -33,7 +33,7 @@ export default function Editor_Implement() {
         className="w-full h-screen"
         apiKey="7rswlbkic1qza5znchgqu539ab63jv62oa7bk3ykax73vf5k"
         onInit={(_evt, editor) => (editorRef.current = editor)}
-        initialValue="<p>This is the initial content of the editor.</p>"
+        initialValue={editorcontent}
         init={{
           height: editorHeight, // Dynamic height based on screen size
           menubar: true,
@@ -64,7 +64,6 @@ export default function Editor_Implement() {
           code_dialog_height: 600,
         }}
       />
-      <button onClick={log}>Log editor content</button>
     </>
   );
 }
