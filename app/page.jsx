@@ -134,12 +134,7 @@ const Home = () => {
             <span className="text-indigo-500 font-extrabold inline-flex flex-col h-[calc(theme(fontSize.6xl)*theme(lineHeight.tight))] md:h-[calc(theme(fontSize.9xl)*theme(lineHeight.tight))] overflow-hidden text-3d-sharp transition-transform duration-300 ease-in-out hover:scale-105">
 
               <ul className="block animate-text-slide-5 text-left leading-tight [&_li]:block">
-                <li>&nbsp;Finance</li>
                 <li>&nbsp;Tech</li>
-                <li>&nbsp;AI</li>
-                <li>&nbsp;Crypto</li>
-                <li>&nbsp;eCommerce</li>
-                <li aria-hidden="true">&nbsp;Finance</li>
               </ul>
             </span>
 
