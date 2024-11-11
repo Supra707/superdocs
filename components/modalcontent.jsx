@@ -64,7 +64,7 @@ const ModalContent = ({ docu, setOpen, setdoc, setok }) => {
             className="w-full bg-blue-700 text-white text-md font-bold"
             onClick={handleSubmit}
           >
-            LogIn
+            Submit
           </Button>
         )}
       </form>
