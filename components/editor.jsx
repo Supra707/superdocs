@@ -19,7 +19,10 @@ export default function Editor_Implement({save, setsave, documentId }) {
   const fetch_editor_content = async () => {
     const documentRef = doc(db, 'Documents', documentId);
     const documentsnap = await getDoc(documentRef);
-    seteditorcontent(documentsnap.data().content);
+    if(documentsnap.data().content!=""){
+      seteditorcontent(documentsnap.data().content);
+    }
+    
   };
   useEffect(() => {
     updateEditorHeight(); // Set initial height based on screen width
