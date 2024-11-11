@@ -8,7 +8,7 @@ import { db } from '@/firebase.config';
 import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { useParams } from 'next/navigation';
 import Editor_Implement from "@/components/editor";
-
+import { Button } from '@nextui-org/button';
 const Page = () => {
     const [comment, setComment] = useState(""); // Hold the current comment value
     const [comments, setComments] = useState([]); // Initialize an array of comments
@@ -18,8 +18,8 @@ const Page = () => {
     const params = useParams();
     const [documentId, setDocumentId] = useState('');
     const [title, setTitle] = useState("");
-    const[editorcontent,seteditorcontent]=useState("<h1><b>Write Something Amazing</b></h1>");
-
+   
+    const[save,setsave]=useState(false);
     // Function to add a new comment to the array
     const addComment = (newComment) => {
         setComments((prevComments) => [...prevComments, newComment]);
@@ -41,7 +41,11 @@ const Page = () => {
             console.error('Error fetching comments:', error);
         }
     };
-
+    //document saving//
+    const handlesave=(e)=>{
+        e.preventDefault();
+        setsave(true);
+    }
     // Fetch comments only when the documentId changes and is non-empty
     useEffect(() => {
         if (documentId) {
@@ -53,8 +57,8 @@ const Page = () => {
         const fetchDocumentTitle = async () => {
             if (params.id) {
                 setDocumentId(params.id);
-                const documentRef = doc(db, 'Documents',params.id);
-                const documentsnap=await getDoc(documentRef);
+                const documentRef = doc(db, 'Documents', params.id);
+                const documentsnap = await getDoc(documentRef);
                 setTitle(documentsnap.data().Title);
             }
         };
@@ -67,10 +71,9 @@ const Page = () => {
             setUser(authUser);
             setLoading(false); // Set loading to false once user is set
         });
-        
+
         return () => unsubscribe();
     }, []);
-
     // Effect to handle adding the comment to Firestore when 'posted' flag changes
     useEffect(() => {
         const addCommentToFirestore = async () => {
@@ -83,7 +86,6 @@ const Page = () => {
                         timestamp: new Date(), // Add a timestamp if needed
                     }),
                 });
-                console.log(editorcontent);
                 // Update the UI with the new comment
                 addComment({
                     text: comment,
@@ -119,19 +121,21 @@ const Page = () => {
     return (
         <div className="flex flex-col md:flex-row text-white font-bold md:gap-x-2 items-start">
             <div className="flex flex-col gap-y-4 p-4 md:p-8 md:w-3/4 w-full">
-                <div>
+                <div className='flex justify-between items-center'>
                     <h1 className="text-4xl font-extrabold text-white">{title}</h1>
+                    <Button className="text-[20px] font-bold p-6" onClick={handlesave} color='primary'>Save</Button>
                 </div>
-                {/* Left side: Editor and Editor Header */}
-                <div className="">
-                    <Editor_Implement editorcontent={editorcontent} seteditorcontent={seteditorcontent} />
+                {/* Left side: Editor */}
+                <div >
+                    <Editor_Implement save={save} setsave={setsave} documentId={documentId}/>
+                    
                 </div>
             </div>
 
             {/* Right side: Comments Section */}
             <div className="flex flex-col w-full md:w-1/4 md:mt-14 p-4 md:p-8 ">
                 <div className="mb-4 w-full">
-                    <CommentCard  title={title} setComment={setComment} setPosted={setPosted} />
+                    <CommentCard title={title} setComment={setComment} setPosted={setPosted} />
                 </div>
 
                 {/* List of Comments */}
