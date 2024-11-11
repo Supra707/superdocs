@@ -1,7 +1,6 @@
 'use client'
 import { useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
-import './App.css';
 
 export default function Editor_Implement() {
   const editorRef = useRef(null);
@@ -13,8 +12,8 @@ export default function Editor_Implement() {
   return (
     <>
       <Editor
-        apiKey='your-api-key'
-        onInit={(_evt, editor) => editorRef.current = editor}
+        apiKey="7rswlbkic1qza5znchgqu539ab63jv62oa7bk3ykax73vf5k"
+        onInit={(_evt, editor) => (editorRef.current = editor)}
         initialValue="<p>This is the initial content of the editor.</p>"
         init={{
           height: 500,
@@ -22,13 +21,28 @@ export default function Editor_Implement() {
           plugins: [
             'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
             'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-            'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+            'insertdatetime', 'media', 'table', 'help', 'wordcount', 'codesample'
           ],
-          toolbar: 'undo redo | blocks | ' +
-            'bold italic forecolor | alignleft aligncenter ' +
-            'alignright alignjustify | bullist numlist outdent indent | ' +
-            'removeformat | help',
-          content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+          toolbar: `
+            undo redo | blocks | 
+            bold italic forecolor | alignleft aligncenter 
+            alignright alignjustify | bullist numlist outdent indent | 
+            removeformat | help | codesample image
+        `,
+          content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+          image_upload_url: '/upload-image',  // Configure image upload endpoint
+          image_advtab: true,  // Enable advanced image settings
+          codesample_languages: [
+            { text: 'JavaScript', value: 'javascript' },
+            { text: 'Python', value: 'python' },
+            { text: 'Java', value: 'java' },
+            { text: 'C++', value: 'cpp' },
+            { text: 'Ruby', value: 'ruby' },
+            { text: 'HTML', value: 'html' },
+            { text: 'CSS', value: 'css' }
+          ],
+          code_dialog_width: 800, // Adjust code dialog width
+          code_dialog_height: 600, // Adjust code dialog height
         }}
       />
       <button onClick={log}>Log editor content</button>
