@@ -7,6 +7,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { db } from '@/firebase.config';
 import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { useParams } from 'next/navigation';
+import  Editor_Implement  from "@/components/editor"
 const Page = () => {
     const [comment, setComment] = useState(""); // Hold the current comment value
     const [comments, setComments] = useState([]); // Initialize an array of comments
@@ -105,13 +106,7 @@ const Page = () => {
         <div className="p-8 w-full h-full bg-slate-900 flex flex-col md:flex-row text-white font-bold gap-y-4 md:gap-x-8 md:justify-between">
             {/* Left side: Editor and Editor Header */}
             <div className="flex flex-col w-full md:w-1/2 gap-y-2">
-                <div className="text-white">
-                    EditorHeader
-                </div>
-
-                <div className="text-white">
-                    Editor
-                </div>
+                <Editor_Implement/>
             </div>
 
             {/* Right side: Comments Section */}
