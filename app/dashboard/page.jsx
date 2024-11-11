@@ -9,21 +9,20 @@ import {
   where,
   orderBy,
   limit,
-  addDoc,
 } from "firebase/firestore";
 import {
   isSignInWithEmailLink,
   signInWithEmailLink,
   onAuthStateChanged,
 } from "firebase/auth";
-
+import {Button} from "@nextui-org/button"
 const Page = () => {
   const [docu, setdoc] = useState("");
   const [ok, setok] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [documents, setDocuments] = useState([]);
-
+  const[id,setid]=useState("");
   // One-time fetch on component mount
   const fetchDocuments = async () => {
     try {
@@ -103,6 +102,10 @@ const Page = () => {
 
     return () => unsubscribe();
   }, []);
+  const handleopendocument=(e)=>{
+    e.preventDefault();
+    console.log(e);
+  }
 
   if (loading) {
     return <div>Loading...</div>;
@@ -120,9 +123,9 @@ const Page = () => {
           </div>
           <div className="flex gap-4 flex-wrap items-center flex-col md:flex-row justify-center md:justify-start relative">
             {documents.slice().reverse().map((document) => (
-              <button key={document.id}>
+              <Button key={document.id} className="w-44 h-44 bg-blue-600 bg-opacity-20 border border-gray-200 rounded-lg" onClick={handleopendocument}  >
                 <div
-                  className="flex flex-col items-center justify-center text-white w-44 h-44 bg-blue-600 bg-opacity-20 border border-gray-200 rounded-lg transition-all duration-500 ease-out animate-slide-in-left"
+                  className="flex flex-col items-center justify-center text-white w-44 h-44  transition-all duration-500 ease-out animate-slide-in-left"
                 >
                   <img
                     src="https://img.icons8.com/?size=100&id=30464&format=png&color=000000"
@@ -131,7 +134,7 @@ const Page = () => {
                   />
                   <p className="text-[15px]">{document.title}</p>
                 </div>
-              </button>
+              </Button>
             ))}
             <Modal docu={docu} setdoc={setdoc} setok={setok} />
           </div>
@@ -140,7 +143,7 @@ const Page = () => {
     );
   }
 
-  return <div>Sign-in failed or invalid link. Please try again.</div>;
+  return <div className="text-white font-bold">Sign-in failed or invalid link. Please try again.</div>;
 };
 
 export default Page;
