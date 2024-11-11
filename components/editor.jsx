@@ -8,7 +8,7 @@ export default function Editor_Implement({save, setsave, documentId }) {
   const editorRef = useRef(null);
   const [editorHeight, setEditorHeight] = useState(5000); // Default to desktop height
   const [editorKey, setEditorKey] = useState(0); // Forcing re-render on height change
-  const [editorcontent, seteditorcontent] = useState("<h1><b>Write Something Amazing</b></h1>");
+  const [editorcontent, seteditorcontent] = useState("");
   // Function to update editor height based on window width
   const updateEditorHeight = () => {
     const newHeight = window.innerWidth <= 768 ? 500 : 5000;
@@ -21,6 +21,9 @@ export default function Editor_Implement({save, setsave, documentId }) {
     const documentsnap = await getDoc(documentRef);
     if(documentsnap.data().content!=""){
       seteditorcontent(documentsnap.data().content);
+    }
+    else{
+      seteditorcontent("<h1><b>Write Something Amazing</b></h1>")
     }
     
   };
