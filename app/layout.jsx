@@ -14,7 +14,7 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "SuperDocs",
+  title: "SuperDocs:Collaborative Rich Text Editor",
   description: "Experience seamless collaboration with SuperDocs",
 };
 
