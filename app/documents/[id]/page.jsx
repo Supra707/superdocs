@@ -103,14 +103,14 @@ const Page = () => {
     }
 
     return (
-        <div className="min-h-screen w-full h-full bg-slate-900 flex flex-col md:flex-row text-white font-bold gap-y-4 md:gap-x-2  items-center ">
-            <div className="flex flex-col gap-y-4 pt-4 m-4 w-3/4">
+        <div className="min-h-screen w-full h-full bg-slate-900 flex flex-col md:flex-row text-white font-bold gap-y-4 md:gap-x-2  ">
+            <div className="flex flex-col gap-y-4 pt-4 m-4 md:w-3/4 w-full">
                 <div>
                     <h1 className="text-4xl  font-extrabold">Document Title</h1>
                 </div>
                 {/* Left side: Editor and Editor Header */}
                 <div className="min-h-screen">
-                    <Editor_Implement />
+                    <Editor_Implement height={500} />
                 </div>
             </div>
 

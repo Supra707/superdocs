@@ -2,7 +2,7 @@
 import { useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 
-export default function Editor_Implement() {
+export default function Editor_Implement({height}) {
   const editorRef = useRef(null);
   const log = () => {
     if (editorRef.current) {
@@ -13,12 +13,11 @@ export default function Editor_Implement() {
   return (
     <>
       <Editor
-        className="w-full h-screen"
         apiKey="7rswlbkic1qza5znchgqu539ab63jv62oa7bk3ykax73vf5k"
         onInit={(_evt, editor) => (editorRef.current = editor)}
         initialValue="<p>Do Something Amazing</p>"
         init={{
-          height: 1000,
+          height: height,
           menubar: true,
           plugins: [
             'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
