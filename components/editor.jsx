@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import './App.css';
 
-export default function Editor() {
+export default function Editor_Implement() {
   const editorRef = useRef(null);
   const log = () => {
     if (editorRef.current) {

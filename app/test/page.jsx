@@ -1,8 +1,8 @@
 import React from 'react'
-import  Editor  from "@/components/editor"
+import  Editor_Implement  from "@/components/editor"
 const page = () => {
   return (
-    <div><Editor/></div>
+    <div><Editor_Implement/></div>
   )
 }
 
