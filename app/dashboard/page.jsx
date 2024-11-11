@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { auth, db } from "@/firebase.config";
 import Modal from "@/components/modal";
+import Link from "next/link";
 import {
   collection,
   query,
@@ -15,14 +16,14 @@ import {
   signInWithEmailLink,
   onAuthStateChanged,
 } from "firebase/auth";
-import {Button} from "@nextui-org/button"
+import { Button } from "@nextui-org/button"
 const Page = () => {
   const [docu, setdoc] = useState("");
   const [ok, setok] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [documents, setDocuments] = useState([]);
-  const[id,setid]=useState("");
+  const [id, setid] = useState("");
   // One-time fetch on component mount
   const fetchDocuments = async () => {
     try {
@@ -74,7 +75,7 @@ const Page = () => {
       setLoading(false);
       if (authUser) {
         fetchDocuments();
-        
+
       }
     });
 
@@ -102,10 +103,7 @@ const Page = () => {
 
     return () => unsubscribe();
   }, []);
-  const handleopendocument=(e)=>{
-    e.preventDefault();
-    console.log(e);
-  }
+
 
   if (loading) {
     return <div>Loading...</div>;
@@ -123,18 +121,21 @@ const Page = () => {
           </div>
           <div className="flex gap-4 flex-wrap items-center flex-col md:flex-row justify-center md:justify-start relative">
             {documents.slice().reverse().map((document) => (
-              <Button key={document.id} className="w-44 h-44 bg-blue-600 bg-opacity-20 border border-gray-200 rounded-lg" onClick={handleopendocument}  >
-                <div
-                  className="flex flex-col items-center justify-center text-white w-44 h-44  transition-all duration-500 ease-out animate-slide-in-left"
-                >
-                  <img
-                    src="https://img.icons8.com/?size=100&id=30464&format=png&color=000000"
-                    className="w-20 h-20 object-cover mb-2"
-                    alt="Document Icon"
-                  />
-                  <p className="text-[15px]">{document.title}</p>
-                </div>
-              </Button>
+              <Link href={`/documents/${document.id}`} target="_blank" >
+                <Button key={document.id} className="w-44 h-44 bg-blue-600 bg-opacity-20 border border-gray-200 rounded-lg" >
+                  <div
+                    className="flex flex-col items-center justify-center text-white w-44 h-44  transition-all duration-500 ease-out animate-slide-in-left"
+                  >
+                    <img
+                      src="https://img.icons8.com/?size=100&id=30464&format=png&color=000000"
+                      className="w-20 h-20 object-cover mb-2"
+                      alt="Document Icon"
+                    />
+                    <p className="text-[15px]">{document.title}</p>
+                  </div>
+                </Button>
+              </Link>
+
             ))}
             <Modal docu={docu} setdoc={setdoc} setok={setok} />
           </div>
