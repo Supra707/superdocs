@@ -7,7 +7,8 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { db } from '@/firebase.config';
 import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { useParams } from 'next/navigation';
-import Editor_Implement from "@/components/editor"
+import Editor_Implement from "@/components/editor";
+
 const Page = () => {
     const [comment, setComment] = useState(""); // Hold the current comment value
     const [comments, setComments] = useState([]); // Initialize an array of comments
@@ -16,6 +17,7 @@ const Page = () => {
     const [loading, setLoading] = useState(true); // Loading state
     const params = useParams();
     const [documentId, setDocumentId] = useState('');
+    const [title, setTitle] = useState("");
 
     // Function to add a new comment to the array
     const addComment = (newComment) => {
@@ -38,13 +40,24 @@ const Page = () => {
             console.error('Error fetching comments:', error);
         }
     };
-    // Fetch comments when the component mounts
+
+    // Fetch comments only when the documentId changes and is non-empty
     useEffect(() => {
-        fetchComments();
+        if (documentId) {
+            fetchComments();
+        }
     }, [documentId]);
 
     useEffect(() => {
-        if (params.id) setDocumentId(params.id);
+        const fetchDocumentTitle = async () => {
+            if (params.id) {
+                setDocumentId(params.id);
+                const documentRef = doc(db, 'Documents',params.id);
+                const documentsnap=await getDoc(documentRef);
+                setTitle(documentsnap.data().Title);
+            }
+        };
+        fetchDocumentTitle();
     }, [params.id]);
 
     // Effect to monitor authentication state
@@ -53,6 +66,7 @@ const Page = () => {
             setUser(authUser);
             setLoading(false); // Set loading to false once user is set
         });
+        
         return () => unsubscribe();
     }, []);
 
@@ -81,13 +95,12 @@ const Page = () => {
             }
         };
 
-        if (posted && comment) {
+        if (posted && comment && user) {
             addCommentToFirestore();
             setPosted(false); // Reset the 'posted' flag after adding the comment
             setComment(''); // Clear the comment input
         }
     }, [posted, comment, documentId, user]);
-
 
     // Conditional rendering
     if (loading) {
@@ -103,29 +116,29 @@ const Page = () => {
     }
 
     return (
-        <div className="min-h-screen w-full h-full bg-slate-900 flex flex-col md:flex-row text-white font-bold gap-y-4 md:gap-x-2  ">
-            <div className="flex flex-col gap-y-4 pt-4 m-4 md:w-3/4 w-full">
+        <div className="flex flex-col md:flex-row text-white font-bold md:gap-x-2 items-start">
+            <div className="flex flex-col gap-y-4 p-4 md:p-8 md:w-3/4 w-full">
                 <div>
-                    <h1 className="text-4xl  font-extrabold">Document Title</h1>
+                    <h1 className="text-4xl font-extrabold text-white">{title}</h1>
                 </div>
                 {/* Left side: Editor and Editor Header */}
-                <div className="min-h-screen">
-                    <Editor_Implement height={500} />
+                <div className="">
+                    <Editor_Implement />
                 </div>
             </div>
 
             {/* Right side: Comments Section */}
-            <div className="flex flex-col w-full md:w-1/4 m-4">
+            <div className="flex flex-col w-full md:w-1/4 md:mt-14 p-4 md:p-8 ">
                 <div className="mb-4 w-full">
-                    <CommentCard setComment={setComment} setPosted={setPosted} />
+                    <CommentCard  title={title} setComment={setComment} setPosted={setPosted} />
                 </div>
 
                 {/* List of Comments */}
                 <h2 className="text-white font-bold text-2xl">Comments</h2>
-
+                <br />
                 <div className="text-white flex flex-col gap-y-4 w-full">
                     {comments.length > 0 ? (
-                        comments.map((comment, index) => (
+                        comments.slice().reverse().map((comment, index) => (
                             <div key={index} className="bg-gray-800 p-4 rounded-md max-w-full overflow-hidden break-words">
                                 <p className="font-medium">{comment.user}</p>
                                 <p>{comment.text}</p>
@@ -137,7 +150,6 @@ const Page = () => {
                 </div>
             </div>
         </div>
-
     );
 };
 

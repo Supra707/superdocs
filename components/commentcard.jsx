@@ -4,7 +4,7 @@ import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image } from "@n
 import { Textarea } from "@nextui-org/input";
 import {Button} from "@nextui-org/button";
 import toast from "react-hot-toast";
-export default function CommentCard({setComment,setPosted}) {
+export default function CommentCard({title,setComment,setPosted}) {
   const [value, setValue] = useState("");
   const handlesubmit=(e)=>{
     e.preventDefault();
@@ -28,7 +28,7 @@ export default function CommentCard({setComment,setPosted}) {
           width={40}
         />
         <div className="flex flex-col">
-          <p className="text-md">Document123</p>
+          <p className="text-md">{title}</p>
           <p className="text-small text-default-500">Enter Comments</p>
         </div>
       </CardHeader>
