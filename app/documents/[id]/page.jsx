@@ -7,7 +7,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { db } from '@/firebase.config';
 import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { useParams } from 'next/navigation';
-import  Editor_Implement  from "@/components/editor"
+import Editor_Implement from "@/components/editor"
 const Page = () => {
     const [comment, setComment] = useState(""); // Hold the current comment value
     const [comments, setComments] = useState([]); // Initialize an array of comments
@@ -103,21 +103,26 @@ const Page = () => {
     }
 
     return (
-        <div className="p-8 w-full h-full bg-slate-900 flex flex-col md:flex-row text-white font-bold gap-y-4 md:gap-x-8 md:justify-between">
-            {/* Left side: Editor and Editor Header */}
-            <div className="flex flex-col w-full md:w-1/2 gap-y-2">
-                <Editor_Implement/>
+        <div className="min-h-screen w-full h-full bg-slate-900 flex flex-col md:flex-row text-white font-bold gap-y-4 md:gap-x-2  items-center ">
+            <div className="flex flex-col gap-y-4 pt-4 m-4 w-3/4">
+                <div>
+                    <h1 className="text-4xl  font-extrabold">Document Title</h1>
+                </div>
+                {/* Left side: Editor and Editor Header */}
+                <div className="min-h-screen">
+                    <Editor_Implement />
+                </div>
             </div>
 
             {/* Right side: Comments Section */}
-            <div className="flex flex-col w-full md:w-1/4">
+            <div className="flex flex-col w-full md:w-1/4 m-4">
                 <div className="mb-4 w-full">
                     <CommentCard setComment={setComment} setPosted={setPosted} />
                 </div>
 
                 {/* List of Comments */}
                 <h2 className="text-white font-bold text-2xl">Comments</h2>
-                
+
                 <div className="text-white flex flex-col gap-y-4 w-full">
                     {comments.length > 0 ? (
                         comments.map((comment, index) => (

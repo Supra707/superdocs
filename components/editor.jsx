@@ -9,29 +9,32 @@ export default function Editor_Implement() {
       console.log(editorRef.current.getContent());
     }
   };
+
   return (
     <>
       <Editor
+        className="w-full h-screen"
         apiKey="7rswlbkic1qza5znchgqu539ab63jv62oa7bk3ykax73vf5k"
         onInit={(_evt, editor) => (editorRef.current = editor)}
-        initialValue="<p>This is the initial content of the editor.</p>"
+        initialValue="<p>Do Something Amazing</p>"
         init={{
-          height: 500,
-          menubar: false,
+          height: 1000,
+          menubar: true,
           plugins: [
             'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
             'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-            'insertdatetime', 'media', 'table', 'help', 'wordcount', 'codesample'
+            'insertdatetime', 'media', 'table', 'help', 'wordcount', 'codesample', 'textcolor' // Added textcolor plugin
           ],
           toolbar: `
-            undo redo | blocks | 
+            undo redo | blocks | fontselect fontsizeselect |  // Added fontselect and fontsizeselect
             bold italic forecolor | alignleft aligncenter 
             alignright alignjustify | bullist numlist outdent indent | 
             removeformat | help | codesample image
-        `,
+          `,
           content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
           image_upload_url: '/upload-image',  // Configure image upload endpoint
           image_advtab: true,  // Enable advanced image settings
+          font_formats: "Arial=arial,helvetica,sans-serif;Comic Sans MS=comic sans ms,sans-serif;Courier New=courier new,courier,monospace;Georgia=georgia,palatino,serif;Times New Roman=times new roman,times,serif;Verdana=verdana,geneva,sans-serif", // Added font formats
           codesample_languages: [
             { text: 'JavaScript', value: 'javascript' },
             { text: 'Python', value: 'python' },
