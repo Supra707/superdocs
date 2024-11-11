@@ -21,7 +21,8 @@ const ModalContent = ({ docu, setOpen, setdoc, setok }) => {
       const docRef = await addDoc(collection(db, "Documents"), {
         User:auth.currentUser.displayName,
         Title:docu,
-        createdAt: serverTimestamp()
+        createdAt: serverTimestamp(),
+        content:"<h1><b>Write Something Amazing</b></h1>"
       });
       console.log("Document written with ID: ", docRef.id);
     } catch (e) {
