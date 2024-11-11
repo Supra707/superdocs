@@ -1,7 +1,6 @@
 'use client';
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-
+import {Button} from '@nextui-org/button';
 import {
   Credenza,
   CredenzaBody,
@@ -53,7 +52,7 @@ const Signinbutton=({className,text})=>{
       {user? (
         <Button  className={className} onClick={handleSignOut}>Log Out</Button>
       ) : (
-        (magicsent==null)?( <Button className={className} onClick={handleOpen}>{text}</Button>):(<Button className={className}onClick={handleOpen}>Email Sent</Button>)
+        (magicsent==null)?( <Button className={className}onClick={handleOpen}>{text}</Button>):(<Button className={className}onClick={handleOpen}>Email Sent</Button>)
        
       )}
 

@@ -1,61 +1,98 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { auth } from "@/firebase.config";
+import { auth, db } from "@/firebase.config";
 import Modal from "@/components/modal";
+import {
+  collection,
+  query,
+  getDocs,
+  where,
+  orderBy,
+  limit,
+  addDoc,
+} from "firebase/firestore";
 import {
   isSignInWithEmailLink,
   signInWithEmailLink,
   onAuthStateChanged,
 } from "firebase/auth";
-import Image from "next/image";
-const page= () => {
-  let index=1;
-  const[doc,setdoc]=useState("");
-  const[ok,setok]=useState(false);
+
+const Page = () => {
+  const [docu, setdoc] = useState("");
+  const [ok, setok] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  // Initialize an empty array for documents
   const [documents, setDocuments] = useState([]);
 
-  // Function to handle adding a new document
-  const handleAddDocument = () => {
-    setDocuments((prevDocs) => [
-      { id:index, title:doc, isButton: false },
-      ...prevDocs, // Insert new card at the left
-    ]);
+  // One-time fetch on component mount
+  const fetchDocuments = async () => {
+    try {
+      const q = query(
+        collection(db, "Documents"),
+        where("User", "==", auth.currentUser?.displayName),
+        orderBy("createdAt", "desc")
+      );
+      const querySnapshot = await getDocs(q);
+      const docs = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        title: doc.data().Title,
+        isButton: false,
+      }));
+      setDocuments(docs);
+    } catch (error) {
+      console.error("Error fetching documents:", error);
+    }
   };
-  useEffect(()=>{
-    if(ok){
-      handleAddDocument();
-      index++;
-      console.log(doc);
-      setdoc("");
+
+  // Fetch the latest document when `ok` is true
+  const fetchLatestDocument = async () => {
+    const q = query(
+      collection(db, "Documents"),
+      where("User", "==", auth.currentUser?.displayName),
+      orderBy("createdAt", "desc"),
+      limit(1)
+    );
+    const querySnapshot = await getDocs(q);
+    const latestDoc = querySnapshot.docs[0];
+    if (latestDoc) {
+      setDocuments((prevDocs) => [
+        { id: latestDoc.id, title: latestDoc.data().Title, isButton: false },
+        ...prevDocs,
+      ]);
+    }
+  };
+  useEffect(() => {
+    if (ok) {
+      fetchLatestDocument();
+      setdoc(""); // Clear input after adding
       setok(false);
     }
-  },[ok]);
+  }, [ok]);
+
   useEffect(() => {
-    // Listener to track authentication state changes
     const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-      setUser(authUser); // Update user state
-      setLoading(false); // Stop loading when auth state is determined
+      setUser(authUser);
+      setLoading(false);
+      if (authUser) {
+        fetchDocuments();
+        
+      }
     });
 
-    // Passwordless sign-in handling
     const handleSignInWithLink = async () => {
       const url = window.location.href;
       if (isSignInWithEmailLink(auth, url)) {
         const email = localStorage.getItem("emailForSignIn");
-
         if (!email) {
           console.error("No email found in local storage.");
           setLoading(false);
           return;
         }
-
         try {
           const result = await signInWithEmailLink(auth, email, url);
-          setUser(result.user); // Set the signed-in user
-          localStorage.removeItem("emailForSignIn"); // Clear stored email
+          setUser(result.user);
+          localStorage.removeItem("emailForSignIn");
+          fetchDocuments(); // Fetch documents after sign-in
         } catch (error) {
           console.error("Error signing in with email link:", error);
         }
@@ -64,33 +101,28 @@ const page= () => {
 
     handleSignInWithLink();
 
-    // Cleanup subscription on component unmount
     return () => unsubscribe();
   }, []);
 
-  // Show loading indicator while processing sign-in
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  // If the user is signed in, show the dashboard
   if (user) {
     return (
-      <div className="bg-slate-900 w-full min-h-screen ">
-        <div className="p-8 ">
+      <div className="bg-slate-900 w-full min-h-screen">
+        <div className="p-8">
           <div className="text-white font-extrabold text-3xl mb-6">
-            Welcome Back, {auth.currentUser?.displayName || "User "}
+            Welcome Back, {auth.currentUser?.displayName}
           </div>
-
-          <div className="flex gap-4 flex-wrap items-center flex-col md:flex-row justify-center md:justify-start relative ">
-            {/* Display Document Cards */}
-            {documents
-              .slice()
-              .reverse()
-              .map((document) => (
+          <div className="text-white font-extrabold text-2xl mb-6">
+            You have a total of {documents.length} documents
+          </div>
+          <div className="flex gap-4 flex-wrap items-center flex-col md:flex-row justify-center md:justify-start relative">
+            {documents.slice().reverse().map((document) => (
+              <button key={document.id}>
                 <div
-                  key={document.id}
-                  className={`flex flex-col items-center justify-center text-white w-44 h-44 bg-blue-600 bg-opacity-20 border border-gray-200 rounded-lg transition-all duration-500 ease-out animate-slide-in-left`}
+                  className="flex flex-col items-center justify-center text-white w-44 h-44 bg-blue-600 bg-opacity-20 border border-gray-200 rounded-lg transition-all duration-500 ease-out animate-slide-in-left"
                 >
                   <img
                     src="https://img.icons8.com/?size=100&id=30464&format=png&color=000000"
@@ -99,19 +131,16 @@ const page= () => {
                   />
                   <p className="text-[15px]">{document.title}</p>
                 </div>
-              ))}
-
-            {/* Create New Document Button */}
-            <Modal doc={doc} setdoc={setdoc} setok={setok}/>
-            
+              </button>
+            ))}
+            <Modal docu={docu} setdoc={setdoc} setok={setok} />
           </div>
         </div>
       </div>
     );
   }
 
-  // If sign-in failed or user is not signed in
   return <div>Sign-in failed or invalid link. Please try again.</div>;
 };
 
-export default page;
+export default Page;

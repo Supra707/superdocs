@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@nextui-org/button";
 import {
   Credenza,
   CredenzaBody,
@@ -12,7 +12,7 @@ import {
 } from "@/components/Credneza";
 import ModalContent from "./modalcontent";
 import { toast } from "react-hot-toast"; // Ensure you import your toast notification system
-const Modal = ({doc,setdoc,setok}) => {
+const Modal = ({docu,setdoc,setok}) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -44,7 +44,7 @@ const Modal = ({doc,setdoc,setok}) => {
             </p>
           </CredenzaHeader>
           <CredenzaBody>
-            <ModalContent doc={doc} setdoc={setdoc} setok={setok} setOpen={setOpen} />
+            <ModalContent docu={docu} setdoc={setdoc} setok={setok} setOpen={setOpen} />
           </CredenzaBody>
           <CredenzaFooter>
             {/* Optional footer content can go here */}
